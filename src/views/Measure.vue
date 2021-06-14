@@ -6,10 +6,17 @@
               <v-list-item-title class="headline">
                 지금 나의 옷장 속 온습도는 ?
               </v-list-item-title>
-              <v-list-item-subtitle><h3>{{ timestamp }}</h3></v-list-item-subtitle>
+              <!-- --------------------------------------------------------------------- -->
+              <div class="callout calendar-day">
+                <div class="grid-x align-middle align-middle">
+                    <div class="shrink cell">
+                        <h1>{{ this.momentInstance.format('YYYY MM D, h:mm:ss a') }}</h1>
+                    </div>
+                </div>
+            </div>
             </v-list-item-content>
           </v-list-item>
-
+            <!-- ----------------------------------------------------------------------- -->
         <v-card-text>
           <v-row align="center">
             <v-col
@@ -64,30 +71,27 @@
 </template>
 
 <script>
+import moment from 'moment';
 
 export default {
     name: 'Measure',
     data () {
       return {
-        timestamp: '',
         forecast: [
           { time: '3 Hours ago', icon: 'mdi-white-balance-sunny', temp: '온도\xB0/습도\xB0' },
           { time: '6 Hours ago', icon: 'mdi-white-balance-sunny', temp: '온도\xB0/습도\xB0' },
           { time: '9 Hours ago', icon: 'mdi-cloud', temp: '온도\xB0/습도\xB0' },
         ],
+         momentInstance: moment()
       }
+    },
+    mounted() {
+        setInterval(() => {
+            this.momentInstance = moment()
+        }, 1000)
     },
     created() {
         this.getNow();
     },
-    methods: {
-                getNow: function() {
-                    const today = new Date();
-                    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    const dateTime = date +' '+ time;
-                    this.timestamp = dateTime;
-                }
-            }
 }
 </script>
