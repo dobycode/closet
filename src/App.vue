@@ -39,33 +39,37 @@
     </template>
 
     <v-list>
-      <v-list-item @click="(type = 'Login'), (dialog = true)">
+      <v-list-item @click="(type = 'login'), (dialog = true)">
           <v-icon color="blue" class="mr-1">mdi-login-variant</v-icon>
           로그인
       </v-list-item>
 
-      <v-list-item @click="(type = 'Join'), (dialog = true)">
+      <v-list-item @click="(type = 'register'), (dialog = true)">
           <v-icon color="green" class="mr-1">mdi-login-variant</v-icon>
           회원가입
       </v-list-item>
-    </v-list>
+    </v-list> 
   </v-menu>
 
   <v-dialog v-model="dialog" max-width="300">
       <v-card>
         <v-card-title class="headline">
-          {{ type }}
+          login
         </v-card-title>
 
-        <v-card-text v-if="type === 'Login'">
-          <v-text-field v-model="id" type="text" label="아이디" required></v-text-field>
-          <v-text-field v-model="pw" type="password" label="비밀번호" required></v-text-field>
+        <v-card-text  v-if="type === 'login'">
+          <v-form id="loginForm">
+            <v-text-field v-model="id" type="text" label="아이디" name="email" required></v-text-field>
+            <v-text-field v-model="pw" type="password" label="비밀번호" name="password" required></v-text-field>
+          </v-form>
         </v-card-text>
 
-        <v-card-text v-if="type === 'Join'">
-          <v-text-field v-model="name" type="text" label="이름" required></v-text-field>
-          <v-text-field v-model="id" type="text" label="아이디" required></v-text-field>
-          <v-text-field v-model="pw" type="password" label="비밀번호" required></v-text-field>
+         <v-card-text v-if="type === 'register'">
+          <v-form id="registForm">
+            <v-text-field v-model="name" type="text" label="이름" name="name" required></v-text-field>
+            <v-text-field v-model="id" type="text" label="아이디" name="email" required></v-text-field>
+            <v-text-field v-model="pw" type="password" label="비밀번호" name="password" required></v-text-field>
+          </v-form> 
         </v-card-text>
 
         <v-card-actions>
@@ -73,7 +77,7 @@
             block
             color="#18A0FB"
             dark
-            @click="submit(), (dialog = false)"
+            @click="save(type)"
           >
             {{ type }}
           </v-btn>
@@ -152,7 +156,9 @@
 
 <script>
 
+import axios from "axios";
 export default {
+
   name: 'App',
 
   data: () => ({
@@ -160,6 +166,45 @@ export default {
     group: null,
     dialog: false,
   }),
+  methods: {
+    save(kind) {
+      console.log("save..");
+      if(kind === "login") {
+        this.dialog = false;
+        this.login();
+      }
+      else if (kind === "register") {
+        this.dialog = false;
+        this.register();
+      }
+    },
+    login() {
+      console.log("login()..");
+      const postData = new FormData(document.getElementById("loginForm"));
+
+      axios
+      .post(`http://ec2-3-139-102-177.us-east-2.compute.amazonaws.com:3000/api/users/login/`, postData)
+      .then((res) => {
+        console.log(res.data.token);
+        this.$store.state.token = res.data.token;
+        console.log(this.$store.state.token);
+      })
+    },
+    register() {
+      console.log("register()..");
+      const postData = new FormData(document.getElementById("registForm"));
+
+      axios
+      .post(`http://ec2-3-139-102-177.us-east-2.compute.amazonaws.com:3000/api/users/signup/`, postData)
+      .then((res) => {
+        console.log(res)
+      })
+    },
+    logout() {
+      console.log("logout()..");
+      
+    }
+  },
 };
 </script>
 
