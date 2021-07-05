@@ -38,7 +38,7 @@
       </v-btn>
     </template>
 
-    <v-list>
+    <v-list v-if="this.$store.state.token == null">
       <v-list-item @click="(type = 'login'), (dialog = true)">
           <v-icon color="blue" class="mr-1">mdi-login-variant</v-icon>
           로그인
@@ -47,6 +47,14 @@
       <v-list-item @click="(type = 'register'), (dialog = true)">
           <v-icon color="green" class="mr-1">mdi-login-variant</v-icon>
           회원가입
+      </v-list-item>
+    </v-list>
+
+    <v-list v-if="this.$store.state.token != null">
+
+      <v-list-item @click="logout()">
+          <v-icon color="green" class="mr-1">mdi-login-variant</v-icon>
+          로그아웃
       </v-list-item>
     </v-list> 
   </v-menu>
@@ -197,11 +205,14 @@ export default {
       axios
       .post(`http://ec2-3-139-102-177.us-east-2.compute.amazonaws.com:3000/api/users/signup/`, postData)
       .then((res) => {
-        console.log(res)
+        console.log(res.data.token);
+        this.$store.state.token = res.data.token;
+        console.log(this.$store.state.token);
       })
     },
     logout() {
       console.log("logout()..");
+      this.$store.state.token = null;
       
     }
   },

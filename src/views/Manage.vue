@@ -1,6 +1,12 @@
 <template>
-    <div class="manage">
-        <h1>관리</h1>
+    <div>
+        <div class="manage" v-if="this.$store.state.token != null">
+            <h1>관리</h1>
+        </div>
+
+        <div v-if="this.$store.state.token == null">
+          토큰 없음 
+        </div>
     </div>
 </template>
 

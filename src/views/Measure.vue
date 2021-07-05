@@ -1,5 +1,6 @@
 <template>
-    <div class="measure">
+<div>
+    <div class="measure" v-if="this.$store.state.token != null">
 
           <v-list-item two-line>
             <v-list-item-content>
@@ -22,17 +23,17 @@
             <div class="pageWrap">
               <div class="tempGraph">
                  <v-col>
-                  온도측정&deg;C
+                  온도측정: {{this.datas.temp}}&deg;C
                 </v-col>
 
-                <el-progress type="circle" :percentage="25"></el-progress>
+                <el-progress type="circle" :percentage="this.datas.temp"></el-progress>
               </div>
               <div class="humidGraph">
                  <v-col>
-                  습도측정%
+                  습도측정: {{this.datas.Hum}}%
                 </v-col>
 
-                <el-progress type="circle" :percentage="30"></el-progress>
+                <el-progress type="circle" :percentage="this.datas.Hum"></el-progress>
               </div>
             </div>
 
@@ -41,14 +42,14 @@
           <v-list-item-icon>
             <v-icon>mdi-thermometer</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle>23 &deg;C</v-list-item-subtitle>
+          <v-list-item-subtitle>{{this.datas.temp}} &deg;C</v-list-item-subtitle>
         </v-list-item>
 
         <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-water-percent</v-icon>
           </v-list-item-icon>
-          <v-list-item-subtitle>48 %</v-list-item-subtitle>
+          <v-list-item-subtitle>{{this.datas.Hum}} %</v-list-item-subtitle>
         </v-list-item>
         <br>
         <v-divider />
@@ -77,11 +78,16 @@
         </v-list>
         <!------------------------------------------------------------------------------------- -->
     </div>
+
+    <div v-if="this.$store.state.token == null">
+      토큰 없음 
+    </div>
+  </div>
 </template>
 
 <script>
 import moment from 'moment';
-
+import axios from 'axios';
 export default {
     name: 'Measure',
     data () {
@@ -91,7 +97,8 @@ export default {
           { time: '6 Hours ago', icon: 'mdi-white-balance-sunny', temp: '온도\xB0/습도\xB0' },
           { time: '9 Hours ago', icon: 'mdi-cloud', temp: '온도\xB0/습도\xB0' },
         ],
-         momentInstance: moment()
+         momentInstance: moment(),
+         datas: null
       }
     },
     mounted() {
@@ -100,7 +107,21 @@ export default {
         }, 1000)
     },
     created() {
-        this.getNow();
+        if(this.$store.state.token != null){
+        var config = {
+          method: 'get',
+          url: 'http://ec2-3-139-102-177.us-east-2.compute.amazonaws.com:3000/api/download/receiveStatus',
+          headers: { 
+            'Authorization': this.$store.state.token, 
+          },
+        };
+
+        axios(config).then(res => {
+          this.datas = res.data
+          console.log(this.datas.id);
+          
+        });
+        }
     },
 }
 </script>
