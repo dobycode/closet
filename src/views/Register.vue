@@ -96,9 +96,13 @@
 
     </div>
 
-    <div v-if="this.$store.state.token == null">
-      토큰 없음 
-    </div>
+      <div v-if="this.$store.state.token == null">
+        <div class="black-bg">
+          <div class="white-bg" style="text-align:center">
+            로그인을 완료해주시기 바랍니다
+          </div>
+        </div>
+      </div>
 
     </div>
 </template>
@@ -131,3 +135,17 @@ export default {
     }
 }
 </script>
+
+<style>
+.black-bg {
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed; padding: 20px;
+}
+
+.white-bg{
+  width: 100%; background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+</style>

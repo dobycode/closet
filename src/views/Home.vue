@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        홈화면
+        홈
     </div>
 </template>
 
