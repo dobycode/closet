@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        홈
+        <v-img src="@/assets/home.png" />
     </div>
 </template>
 

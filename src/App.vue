@@ -10,7 +10,7 @@
         @click="$router.push({path: '/'})"
         text-color="white"
       >
-        CLOSET
+        CLOSET KEEPER
       </v-btn>
         
       <v-spacer />

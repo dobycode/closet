@@ -98,9 +98,9 @@ export default {
     data () {
       return {
         forecast: [
-          { time: '3 Hours ago', icon: 'mdi-white-balance-sunny', temp: '온도\xB0/습도\xB0' },
-          { time: '6 Hours ago', icon: 'mdi-white-balance-sunny', temp: '온도\xB0/습도\xB0' },
-          { time: '9 Hours ago', icon: 'mdi-cloud', temp: '온도\xB0/습도\xB0' },
+          { time: '3 Hours ago', icon: 'mdi-white-balance-sunny', temp: '온도: 30\xB0/습도: 40%' },
+          { time: '6 Hours ago', icon: 'mdi-white-balance-sunny', temp: '온도: 32\xB0/습도: 45%' },
+          { time: '9 Hours ago', icon: 'mdi-cloud', temp: '온도: 26\xB0/습도: 70%' },
         ],
          momentInstance: moment(),
          datas: null
